@@ -1,0 +1,26 @@
+{
+  "name": "test-runner",
+  "version": "1.0.0",
+  "description": "Util for running mocha test suites, and reporting the results",
+  "main": "runner.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "author": {
+    "name": "Nathan Boxhall-Burnett",
+    "email": "nboxhallburnett@appcelerator.com"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "minimist": "^1.2.0",
+    "mocha": "^3.0.2",
+    "pad-left": "^2.1.0",
+    "strip-ansi": "^3.0.1",
+    "word-wrap": "^1.1.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jscs": "^3.0.1"
+  }
+}
