@@ -162,7 +162,7 @@ module.exports = class Runner {
 			header += `- Start Time : ${new Date(Date.now() - (timeTaken.total || 0))}\n\n`;
 
 			// If the test had failures, then generate the failure list for it
-			if (typeof(failures[testKey]) !== 'undefined') {
+			if (failures[testKey].length) {
 				failureBody += '|--------------------\n';
 				failureBody += '| Failures:\n';
 				failureBody += '|--------------------\n\n';
@@ -230,7 +230,7 @@ module.exports = class Runner {
 				failureBody += `- Duration   : ${helper.msToString(timeTaken[testKey]) || +timeTaken[testKey]}\n\n`;
 
 				// If the single test had failures, then generate the failure list for it
-				if (typeof(failures[testKey]) !== 'undefined') {
+				if (failures[testKey].length) {
 					failureBody += '|--------------------\n';
 					failureBody += '| Failures:\n';
 					failureBody += '|--------------------\n\n';
