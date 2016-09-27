@@ -184,9 +184,9 @@ module.exports = class Runner {
 				totalSkip = 0;
 
 			// Loop through all the test files and count how many total passes, failures, and skips there were
-			for (let i = 0; i < Object.keys(total).length; i++) {
-				for (let j = 0; j < total[Object.keys(total)[i]].length; j++) {
-					switch (total[Object.keys(total)[i]][j].test.state) {
+			for (let testSuite in Object.keys(total)) {
+				for (let testObj in testSuite) {
+					switch (testObj.test.state) {
 						case 'passed':
 							totalPass++;
 							break;
@@ -209,9 +209,7 @@ module.exports = class Runner {
 			header += `- Start Time      : ${new Date(Date.now() - timeTaken.total)}\n\n`;
 
 			// Loop through all the tests and generate detailed reports for them all
-			for (let i = 0; i < Object.keys(total).length; i++) {
-				const testKey = Object.keys(total)[i];
-
+			for (let testKey in Object.keys(total)) {
 				// If no data exists for the values, use an empty array. That way .length calls return expected results
 				!passes[testKey] && (passes[testKey] = []);
 				!failures[testKey] && (failures[testKey] = []);
@@ -292,18 +290,18 @@ module.exports = class Runner {
 			optsLen = 0;
 
 		// Loop through the supplied parameters and create the string to use to show the usable arguments
-		for (let i = 0; i <= params.args.length - 1; i++) {
+		for (let arg in params.args) {
 			const arr = [];
 			// If we weren't given an array, make one
-			!Array.isArray(params.args[i].aliases) && (params.args[i].aliases = [params.args[i].aliases]);
+			!Array.isArray(arg.aliases) && (arg.aliases = [arg.aliases]);
 			// Go through all of the aliases and store them with the correct formatting
-			for (let j = 0; j <= params.args[i].aliases.length - 1; j++) {
-				arr.push((params.args[i].aliases[j].length === 1 ? '-' : '--') + params.args[i].aliases[j]);
+			for (let alias in arg.aliases) {
+				arr.push((alias.length === 1 ? '-' : '--') + alias);
 			}
 			// Join the aliases together, and comma separate them
 			let optsStr = arr.join(', '.grey);
 			// If an argument type restriction is specified, add that to the output
-			params.args[i].type && (optsStr += ` {${Array.isArray(params.args[i].type) ? params.args[i].type.join('|') : params.args[i].type}}`.cyan);
+			arg.type && (optsStr += ` {${Array.isArray(arg.type) ? arg.type.join('|') : arg.type}}`.cyan);
 			// Check if the output is the longest one so far, and if so store its length for padding.
 			stripAnsi(optsStr).length > optsLen && (optsLen = stripAnsi(optsStr).length);
 			// All done here
@@ -319,8 +317,8 @@ module.exports = class Runner {
 		let notes = '';
 		if (Array.isArray(params.notes)) {
 			// If we have multiple notes, word-wrap them and separate them out
-			for (var i = 0; i <= params.notes.length - 1; i++) {
-				notes += '\n' + wrap(params.notes[i], {indent: '   ', width: 100}) + '\n';
+			for (let note in params.notes) {
+				notes += '\n' + wrap(note, {indent: '   ', width: 100}) + '\n';
 			}
 		} else {
 			notes = '\n' + wrap(params.notes, {indent: '   ', width: 100}) + '\n';
@@ -351,17 +349,15 @@ module.exports = class Runner {
 	 */
 	_processArgs (params) {
 		// Loop through all the supplied args
-		for (let i = params.args.length - 1; i >= 0; i--) {
+		for (let arg in params.args) {
 			// If there isn't a supplied function, then there isn't any point processing it
-			if (params.args[i].function) {
+			if (arg.function) {
 				// If we weren't given an array, make one
-				!Array.isArray(params.args[i].aliases) && (params.args[i].aliases = [params.args[i].aliases]);
+				!Array.isArray(arg.aliases) && (arg.aliases = [arg.aliases]);
 				// Loop through each of the aliases for the argument
-				for (let j = params.args[i].aliases.length - 1; j >= 0; j--) {
+				for (let alias in arg.aliases) {
 					// Check if the argument relating to the alias has been used, and if so call the supplied function with its value
-					if (args[params.args[i].aliases[j]]) {
-						params.args[i].function(args[params.args[i].aliases[j]]);
-					}
+					args[alias] && arg.function(args[alias]);
 				}
 			}
 		}
@@ -439,9 +435,7 @@ module.exports = class Runner {
 	 */
 	_addData (obj, key, data) {
 		// Check if the object exists already, and if not, define it.
-		if (!this[obj][key]) {
-			this[obj][key] = [];
-		}
+		!this[obj][key] && (this[obj][key] = []);
 		this[obj][key].push(data);
 	}
 };
