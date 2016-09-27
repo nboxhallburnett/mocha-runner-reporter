@@ -10,7 +10,7 @@ Test Runner
 
 test-runner is a util which lets you easily run a set of mocha tests programatically, and report the results.
 
-something about generating helper outputs to go here
+The test runner automatically generates `-h | --help` parameter helper outputs using the data provided during setup. The generated help output displays each available argument that can be used with the test suite, along with any provided typing and description for the options, as well as provided usage descriptions or notes.
 
 Test runs return a Promise containing the results to allow you to easily perform custom reporting alongside (or instead of) the built in reporting tool.
 
@@ -27,7 +27,7 @@ const Runner = require('whatever-i-call-the-module');
 
 const params = {...}; // See Structure
 
-const runner = new Runner(['path/to/tests/', '/actual/test.js'], ['test/to/ignore'], params);
+const runner = new Runner(['path/to/tests/', '/actual/test/file.js'], ['pattern-to-ignore', 'file/to/ignore.js'], params);
 
 runner.run()
     .then(results => {
@@ -44,7 +44,7 @@ The test runner's constructor takes
 
 ```javascript
 const params = {
-	title: 'Testing Test Runner',
+	title: 'Test Runner Tester',
 	description: 'Tests the thing which tests the tests',
 	notes: [
 		'Foo bar baz',
@@ -88,11 +88,11 @@ Which generates a helper output for the test suite
 ```
 > node run.js -h
 
-┌─────────────────────┐
-│                     │
-│ Testing Test Runner │
-│                     │
-└─────────────────────┘
+┌────────────────────┐
+│                    │
+│ Test Runner Tester │
+│                    │
+└────────────────────┘
 
 
 Description:
