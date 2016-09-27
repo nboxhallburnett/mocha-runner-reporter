@@ -46,19 +46,30 @@ The test runner's constructor takes
 const params = {
 	title: 'Testing Test Runner',
 	description: 'Tests the thing which tests the tests',
-	notes: [ 'Foo bar baz',
+	notes: [
+		'Foo bar baz',
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco'
 	],
 	args: [
 		{
 			aliases: ['r', 'run', 'runner'],
 			description: 'does the thing',
-			type: 'string'
+			type: 'string',
+			function: value => {
+				config.option = value;
+			}
 		},
 		{
 			aliases: ['n', 'num', 'number'],
 			description: 'doesn\'t do the thing',
-			type: 'number'
+			type: 'number',
+			function: value => {
+				if (value === something) {
+					doSomething();
+				} else {
+					doSomethingElse();
+				}
+			}
 		},
 		{
 			aliases: ['useless'],
@@ -128,8 +139,8 @@ runner.run().then(results => {
 
 Overview:
 - Test Suites Ran : 2
-- Total Passes    : 6 (60%)
-- Total Failures  : 4 (40%)
+- Total Passes    : 8 (72.72%)
+- Total Failures  : 3 (27.27%)
 - Total Skipped   : 0 (0%)
 - Total Duration  : 1m25s
 - Start Time      : Mon Sep 19 2016 10:08:06 GMT+0100 (BST)
@@ -138,7 +149,7 @@ Overview:
 ‖ Password Policy
 ‖==============================
 
-- File       : /Users/example/path/authentication/password-policy.js
+- File       : /path/to/some/file.js
 - Passes     : 0 (0%)
 - Failures   : 1 (100%)
 - Skipped    : 0 (0%)
@@ -159,15 +170,19 @@ Error    : RuntimeError
      Callstack:
      -> url("https://test.example.com")
 
+
+     at /path/to/some/file.js:12:34
+     at ...
+
 =============================================
 
 ‖==============================
 ‖ Test signing in
 ‖==============================
 
-- File       : /Users/example/path/authentication/sign-in.js
-- Passes     : 6 (66.67%)
-- Failures   : 3 (33.33%)
+- File       : /path/to/other/file.js
+- Passes     : 8 (80%)
+- Failures   : 2 (20%)
 - Skipped    : 0 (0%)
 - Duration   : 1m25s
 
@@ -180,23 +195,13 @@ Failure 1:
 Name     : should fail to sign in with an incorrect valid user id
 Duration : 832ms
 Error    : expected '' to equal 'Sample Text.'
+
+     at /path/to/other/file.js:12:34
+     at ...
+
 ------------------------------
 
 Failure 2:
-
-Name     : should reset password using Forgot Password
-Duration : 12s 117ms
-Error    : RuntimeError
-     (NoSuchWindow:23) A request to switch to a different window could not be satisfied because the window could not be found.
-     Problem: no such window: target window already closed from unknown error: web view not found
-
-     Callstack:
-     -> cookie("POST",{"name":"dvid","value":"d50c333a-d3b0-472b-a195-dfe365fdddff","expiry":1537118895739})
-     -> setCookie({"name":"dvid","value":"d50c333a-d3b0-472b-a195-dfe365fdddff","expiry":1537118895739})
-
-------------------------------
-
-Failure 3:
 
 Name     : should change the password via My Profile
 Duration : 4s 652ms
@@ -206,6 +211,9 @@ Error    : RuntimeError
 
      Callstack:
      -> url("https://test.example.com/profile")
+
+     at /path/to/other/file.js:56:10
+     at ...
 
 =============================================
 ```
