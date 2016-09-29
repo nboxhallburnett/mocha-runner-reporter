@@ -4,7 +4,8 @@
   "description": "Util for running mocha test suites, and reporting the results",
   "main": "runner.js",
   "scripts": {
-    "test": "grunt"
+    "test": "mocha test",
+    "lint": "grunt"
   },
   "author": {
     "name": "Nathan Boxhall-Burnett",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
-    "grunt-jscs": "^3.0.1"
+    "grunt-jscs": "^3.0.1",
+    "should": "^11.1.0"
   }
 }
