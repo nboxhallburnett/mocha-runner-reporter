@@ -7,27 +7,18 @@ const files = [
 module.exports = function (grunt) {
 // Project configuration.
 	grunt.initConfig({
-		jscs: {
+		eslint: {
 			options: {
-				config: ".jscsrc",
-				fix: true,
+				configFile: '.eslintrc',
+				fix: false
 			},
-			src: files
-		},
-		jshint: {
-			files: files,
-			options: {
-				esversion: 6,
-				node: true,
-				'-W030': false // Disable warning for `comparison && doSomething()`
-			}
+			target: files
 		}
 	});
 
 	// Load grunt plugins for modules
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks('grunt-eslint');
 
 	// register tasks
-	grunt.registerTask('default', ['jshint', 'jscs']);
+	grunt.registerTask('default', ['eslint']);
 };
