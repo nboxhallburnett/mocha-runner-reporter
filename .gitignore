@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+builds/
+node_modules/
+DashboardUIAutomation/utils/assets/mobile_app/
+cookies.txt

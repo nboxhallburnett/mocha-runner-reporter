@@ -217,7 +217,3 @@ Error    : RuntimeError
 
 =============================================
 ```
-
-### Related Tools ###
-
-- [test-reporter](https://example.com) - Util for reporting the result of test runs
