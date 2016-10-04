@@ -21,7 +21,8 @@
 		],
 		"max-len": [
 			2,
-			200
+			200,
+			{ "ignoreComments": true }
 		],
 		"indent": [
 			2,
@@ -73,7 +74,7 @@
 		"no-multiple-empty-lines": 2,
 
 		"accessor-pairs": "error",
-		"array-callback-return": "error",
+		"array-callback-return": "off",
 		"arrow-body-style": "off",
 		"arrow-parens": [
 			"error",
@@ -108,13 +109,13 @@
 			"error",
 			"last"
 		],
-		"complexity": "error",
+		"complexity": "off",
 		"computed-property-spacing": [
 			"error",
 			"never"
 		],
 		"consistent-return": "off",
-		"consistent-this": "error",
+		"consistent-this": "off",
 		"default-case": "error",
 		"dot-location": [
 			"error",
@@ -158,7 +159,7 @@
 		"newline-per-chained-call": "error",
 		"no-alert": "error",
 		"no-array-constructor": "error",
-		"no-bitwise": "error",
+		"no-bitwise": "off",
 		"no-catch-shadow": "error",
 		"no-confusing-arrow": "error",
 		"no-continue": "error",
