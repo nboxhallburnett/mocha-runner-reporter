@@ -1,8 +1,10 @@
-Test Runner
-=============
+mocha-runner-reporter
+===========
 - [Description](#description)
 - [Usage](#usage)
 - [Structure](#structure)
+  + [Constructor parameters](#constructor-parameters)
+  + [Email Reporter data](#email-reporter-data)
 - [Report Generation](#report-generation)
 
 ### Description ###
@@ -13,6 +15,7 @@ The test runner automatically generates `-h | --help` parameter helper outputs u
 
 Test runs return a Promise containing the results to allow you to easily perform custom reporting alongside (or instead of) the built in reporting tool.
 
+Also included is a Promise-based wrapper around [nodemailer](https://www.npmjs.com/package/nodemailer), which allows for simplified setup and use for sending email reports for completed test runs.
 
 ### Usage ###
 
@@ -21,73 +24,94 @@ Test runs return a Promise containing the results to allow you to easily perform
 ```
 
 ```javascript
-'use strict';
 const Runner = require('mocha-runner-reporter');
 const Reporter = Runner.Reporter; // Optional
 
-const params = {...}; // See Structure
-const reportData = {...} // See Structure
+const params = {...};     // See Structure
+const reportData = {...}; // See Structure
 
-const runner = new Runner(['path/to/tests/', '/actual/test/file.js'], ['pattern-to-ignore', 'file/to/ignore.js'], params);
+const runner = new Runner(test-files, ignored-files, params);
 
 runner.run()
-	.then(results => {
-		// Optional custom reporting using the raw data
-		const report = runner.generateReport('test title', results);
+    .then(results => {
+        // Optional custom reporting using the raw data
+        const report = runner.generateReport(params.title, results);
 
-		// Optional reporting using the generated report
-		const reporter = new Reporter(reportData.provider, reportData.email, reportData.password, reportData.alias);
-		return reporter.sendEmail(reportData.recipients, reportData.subject, report);
-	})
+        // Optional reporting using the generated report
+        const reporter = new Reporter(reportData.provider, reportData.email, reportData.password, reportData.alias);
+        return reporter.sendEmail(reportData.recipients, reportData.subject, report);
+    })
+    ...
 ```
 
 
 ### Structure ###
 
+This section covers the structure of the required data for the runner and reporter.
+
 #### Constructor parameters
 
-The test runner's constructor takes
+The test runner's constructor takes the following parameters object format
 
 ```javascript
 const params = {
-	title: 'Test Runner Tester',
-	description: 'Tests the thing which tests the tests',
-	notes: [
-		'Foo bar baz',
-		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco'
-	],
-	args: [
-		{
-			aliases: ['r', 'run', 'runner'],
-			description: 'does the thing',
-			type: 'string',
-			function: value => {
-				config.option = value;
-			}
-		},
-		{
-			aliases: ['n', 'num', 'number'],
-			description: 'doesn\'t do the thing',
-			type: 'number',
-			function: value => {
-				if (value === something) {
-					doSomething();
-				} else {
-					doSomethingElse();
-				}
-			}
-		},
-		{
-			aliases: ['useless'],
-			description: 'returns the supplied value(s), but with a typo',
-			type: ['string','string[]']
-		},
-		{
-			aliases: ['d'],
-			description: 'this one has a really long description, because sometimes you need them.'
-		}
-	]
-}
+    title: 'Example title',             // Title of the test suite
+    usage: 'node example [options]'     // [Optional] Instructions for the usage of the suite
+    description: 'Example description', // [Optional] Description of the test suite
+    notes: ['note1', 'note2'],          // [Optional] Notes about the test suite
+    args: [                             // Array of arguments the test suite takes
+        {
+            aliases: ['example'],       // Array of aliases the arg takes
+            description: 'example',     // Description of the argument
+            type: 'string',             // [Optional] Type of data the argument takes
+            function: value => {        // Function to perform using the provided data
+                doSomething(value);
+            }
+        }
+    ]
+};
+```
+For example:
+```javascript
+const params = {
+    title: 'Test Runner Tester',
+    usage: 'node runner [suite/test] [options]',
+    description: 'Tests the thing which tests the tests.',
+    notes: [
+        'Foo bar baz',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco'
+    ],
+    args: [
+        {
+            aliases: ['run', 'runner'],
+            description: 'Does a thing',
+            type: 'string',
+            function: value => {
+                config.option = value;
+            }
+        },
+        {
+            aliases: ['n', 'num', 'number'],
+            description: 'Does a different thing',
+            type: 'number',
+            function: value => {
+                if (value === something) {
+                    doSomething();
+                } else {
+                    doSomethingElse();
+                }
+            }
+        },
+        {
+            aliases: ['r', 'report'],
+            description: 'Send an email report from the test run to the provided email addresses (comma separated list)',
+            type: 'string[]',
+            function: value => {
+                reportData.recipients = value.split(',');
+            }
+        }
+    ]
+};
 ```
 Which generates a helper output for the test suite
 
@@ -103,14 +127,19 @@ Which generates a helper output for the test suite
 
 Description:
 
-   Tests the thing which tests the tests
+   Tests the thing which tests the tests.
+
+
+Usage:
+
+   node runner [suite/test] [options]
 
 
 Options:
 
-   -r, --run, --runner {string}    does the thing
-   -n, --num, --number {number}    doesn't do the thing
-   --useless {string|string[]}     returns the supplied value(s), but with a typo
+   --run, --runner {string}        Does a thing
+   -n, --num, --number {number}    Does a different thing
+   -r, --report {string[]}         Send an email report from the test run to the provided email addresses (comma separated list)
    -t, --timeout {number}          Time in milliseconds to wait before a test is counted as failing (Defaults to 300000)
    -s, --slow {number}             Time in milliseconds to wait before a test is counted as slow (Defaults to 10000)
    -R, --reporter {string}         Mocha reporter to use (Defaults to spec)
@@ -130,12 +159,12 @@ To use the reporter, you need to have the following data (not required to be in 
 
 ```javascript
 const reportData = {
-	provider: 'gmail',            // See here for supported providers - https://github.com/nodemailer/nodemailer-wellknown#supported-services
-	email: 'exmaple@gmail.com',   // The email address to send from
-	password: '<password>',       // Password for the above email address
-	alias: 'Test Reporter',       // [Optional] Alias to use for the sent email
-	recipients: [],               // Array of recipients to use for the sent report
-	subject: 'Test Results'       // Subject to use for the email
+    provider: 'gmail',            // See here for supported providers - https://github.com/nodemailer/nodemailer-wellknown#supported-services
+    email: 'exmaple@gmail.com',   // The email address to send from
+    password: '<password>',       // Password for the above email address
+    alias: 'Test Reporter',       // [Optional] Alias to use for the sent email
+    recipients: [],               // Array of recipients to use for the sent report
+    subject: 'Test Results'       // Subject to use for the email
 };
 ```
 
@@ -145,18 +174,18 @@ The runner will also let you generate a report from the data gathered during the
 
 ```javascript
 runner.run().then(results => {
-	const report = runner.generateReport('test title', results);
-	console.log(report);
-})
+    const report = runner.generateReport(params.title, results);
+    console.log(report);
+});
 ```
 
 ```
-/***************\
+/********************\
 
-   test title
-  Test Results
+  Test Runner Tester
+     Test Results
 
-\***************/
+\********************/
 
 Overview:
 - Test Suites Ran : 2
@@ -167,7 +196,7 @@ Overview:
 - Start Time      : Mon Sep 19 2016 10:08:06 GMT+0100 (BST)
 
 ‖==============================
-‖ Password Policy
+‖ Example Test
 ‖==============================
 
 - File       : /path/to/some/file.js
@@ -182,7 +211,7 @@ Overview:
 
 Failure 1:
 
-Name     : "before all" hook: Initiate the browser instance
+Name     : "before all" hook: Early failure
 Duration : NaN
 Error    : RuntimeError
      (UnknownError:13) An unknown server-side error occurred while processing the command.
@@ -198,7 +227,7 @@ Error    : RuntimeError
 =============================================
 
 ‖==============================
-‖ Test signing in
+‖ Another Example Test
 ‖==============================
 
 - File       : /path/to/other/file.js
@@ -213,9 +242,9 @@ Error    : RuntimeError
 
 Failure 1:
 
-Name     : should fail to sign in with an incorrect valid user id
+Name     : should fail
 Duration : 832ms
-Error    : expected '' to equal 'Sample Text.'
+Error    : expected 'Something' to equal 'Something Else'
 
      at /path/to/other/file.js:12:34
      at ...
@@ -224,7 +253,7 @@ Error    : expected '' to equal 'Sample Text.'
 
 Failure 2:
 
-Name     : should change the password via My Profile
+Name     : should also fail
 Duration : 4s 652ms
 Error    : RuntimeError
      (NoSuchWindow:23) A request to switch to a different window could not be satisfied because the window could not be found.

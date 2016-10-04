@@ -2,7 +2,7 @@
   "name": "mocha-runner-reporter",
   "version": "1.0.0",
   "description": "Util for running mocha test suites, and reporting the results",
-  "main": "runner.js",
+  "main": "index.js",
   "scripts": {
     "test": "grunt"
   },
@@ -24,5 +24,20 @@
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-jscs": "^3.0.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/nboxhallburnett/mocha-runner-reporter.git"
+  },
+  "keywords": [
+    "mocha",
+    "test",
+    "runner",
+    "reporter",
+    "report"
+  ],
+  "engines": {
+    "node": ">= 4.0.0"
   }
 }
