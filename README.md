@@ -4,7 +4,6 @@ Test Runner
 - [Usage](#usage)
 - [Structure](#structure)
 - [Report Generation](#report-generation)
-- [Related Tools](#related-tools)
 
 ### Description ###
 
@@ -23,22 +22,29 @@ Test runs return a Promise containing the results to allow you to easily perform
 
 ```javascript
 'use strict';
-const Runner = require('whatever-i-call-the-module');
+const Runner = require('mocha-runner-reporter');
+const Reporter = Runner.Reporter; // Optional
 
 const params = {...}; // See Structure
+const reportData = {...} // See Structure
 
 const runner = new Runner(['path/to/tests/', '/actual/test/file.js'], ['pattern-to-ignore', 'file/to/ignore.js'], params);
 
 runner.run()
-    .then(results => {
-        // Optional custom reporting using the raw data...
-        const report = runner.generateReport('test title', results);
-        // Optional reporting using the generated report
-    })
+	.then(results => {
+		// Optional custom reporting using the raw data
+		const report = runner.generateReport('test title', results);
+
+		// Optional reporting using the generated report
+		const reporter = new Reporter(reportData.provider, reportData.email, reportData.password, reportData.alias);
+		return reporter.sendEmail(reportData.recipients, reportData.subject, report);
+	})
 ```
 
 
 ### Structure ###
+
+#### Constructor parameters
 
 The test runner's constructor takes
 
@@ -116,6 +122,21 @@ Notes:
 
    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+```
+#### Email Reporter data
+
+The test runner also includes an optional promise based wrapper around nodemailer, which also simplifies the setup and sending of emails.
+To use the reporter, you need to have the following data (not required to be in an object as per the [usage](#usage) section)
+
+```javascript
+const reportData = {
+	provider: 'gmail',            // See here for supported providers - https://github.com/nodemailer/nodemailer-wellknown#supported-services
+	email: 'exmaple@gmail.com',   // The email address to send from
+	password: '<password>',       // Password for the above email address
+	alias: 'Test Reporter',       // [Optional] Alias to use for the sent email
+	recipients: [],               // Array of recipients to use for the sent report
+	subject: 'Test Results'       // Subject to use for the email
+};
 ```
 
 ### Report Generation ###
