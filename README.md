@@ -64,6 +64,7 @@ const params = {
             aliases: ['example'],       // Array of aliases the arg takes
             description: 'example',     // Description of the argument
             type: 'string',             // [Optional] Type of data the argument takes
+            required: (true || {}),     // [Optional] Specify whether an argument is required
             function: value => {        // Function to perform using the provided data
                 doSomething(value);
             }
@@ -86,6 +87,9 @@ const params = {
             aliases: ['run', 'runner'],
             description: 'Does a thing',
             type: 'string',
+            required: {
+                requires: ['r', 'report']
+            }
             function: value => {
                 config.option = value;
             }
@@ -94,6 +98,7 @@ const params = {
             aliases: ['n', 'num', 'number'],
             description: 'Does a different thing',
             type: 'number',
+            required: true,
             function: value => {
                 if (value === something) {
                     doSomething();
@@ -137,8 +142,8 @@ Usage:
 
 Options:
 
-   --run, --runner {string}        Does a thing
-   -n, --num, --number {number}    Does a different thing
+   --run, --runner {string}        Does a thing - Requires -r/--report
+   -n, --num, --number {number}    Does a different thing - Required
    -r, --report {string[]}         Send an email report from the test run to the provided email addresses (comma separated list)
    -t, --timeout {number}          Time in milliseconds to wait before a test is counted as failing (Defaults to 300000)
    -s, --slow {number}             Time in milliseconds to wait before a test is counted as slow (Defaults to 10000)
