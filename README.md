@@ -69,7 +69,8 @@ const params = {
                 doSomething(value);
             }
         }
-    ]
+    ],
+    afterArgs: () => {}                 // [Optional] Function to perform after processing arguments
 };
 ```
 For example:
@@ -115,7 +116,12 @@ const params = {
                 reportData.recipients = value.split(',');
             }
         }
-    ]
+    ],
+    afterArgs: () => {
+        if (!config.option && config.somethingFromAnArg !== 'something') {
+            // More Validation
+        }
+	}
 };
 ```
 Which generates a helper output for the test suite
