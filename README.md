@@ -67,6 +67,9 @@ const params = {
             required: (true || {}),     // [Optional] Specify whether an argument is required
             function: value => {        // Function to perform using the provided data
                 doSomething(value);
+            },
+            default: () => {            // [Optional] Function to fun if the argument is not provided
+                defaultTheData();
             }
         }
     ],
@@ -114,6 +117,9 @@ const params = {
             type: 'string[]',
             function: value => {
                 reportData.recipients = value.split(',');
+            },
+            default: () => {
+                reportData.recipients = 'test@example.com';
             }
         }
     ],
