@@ -1,6 +1,6 @@
 {
   "name": "mocha-runner-reporter",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Util for running mocha test suites, and reporting the results",
   "main": "index.js",
   "scripts": {
