@@ -65,6 +65,7 @@ const params = {
             description: 'example',     // Description of the argument
             type: 'string',             // [Optional] Type of data the argument takes
             required: (true || {}),     // [Optional] Specify whether an argument is required
+            hidden: true,               // [Optional] Hide the parameter from the help output
             function: value => {        // Function to perform using the provided data
                 doSomething(value);
             },
