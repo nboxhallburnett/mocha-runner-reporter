@@ -17,7 +17,7 @@
 		],
 		"operator-linebreak": [
 			2,
-			"after"
+			"before"
 		],
 		"max-len": [
 			2,
