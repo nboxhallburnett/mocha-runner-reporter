@@ -74,6 +74,10 @@ const params = {
             }
         }
     ],
+    mochaOpts: {                        // [Optional] Mocha options to pass through (overridden by supplied arguments)
+        timeout: 20000,
+        ui: 'tdd'
+    },
     afterArgs: () => {}                 // [Optional] Function to perform after processing arguments
 };
 ```
