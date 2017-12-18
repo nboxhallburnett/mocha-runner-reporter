@@ -1,6 +1,3 @@
 {
-	"extends": [ "axway/env-node", "axway/+mocha" ],
-	"parserOptions": {
-		"ecmaVersion": 8
-	}
+	"extends": [ "axway/env-node", "axway/+mocha" ]
 }
