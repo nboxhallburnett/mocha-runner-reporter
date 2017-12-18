@@ -4,7 +4,7 @@
   "description": "Util for running mocha test suites, and reporting the results",
   "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "test": "eslint ."
   },
   "author": {
     "name": "Nathan Boxhall-Burnett",
@@ -21,8 +21,8 @@
     "word-wrap": "^1.1.0"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-eslint": "^19.0.0"
+    "eslint": "^4.13.1",
+    "eslint-config-axway": "^2.0.7"
   },
   "license": "MIT",
   "repository": {

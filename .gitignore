@@ -2,3 +2,4 @@
 .idea/
 builds/
 node_modules/
+.vscode
