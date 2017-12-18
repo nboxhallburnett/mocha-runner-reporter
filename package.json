@@ -13,12 +13,12 @@
   "dependencies": {
     "colors": "^1.1.2",
     "minimist": "^1.2.0",
-    "mocha": "^3.0.2",
-    "nodemailer": "^2.6.4",
-    "nodemailer-smtp-transport": "^2.7.2",
+    "mocha": "^4.0.1",
+    "nodemailer": "^4.4.1",
+    "nodemailer-smtp-transport": "^2.7.4",
     "pad-left": "^2.1.0",
-    "strip-ansi": "^3.0.1",
-    "word-wrap": "^1.1.0"
+    "strip-ansi": "^4.0.0",
+    "word-wrap": "^1.2.3"
   },
   "devDependencies": {
     "eslint": "^4.13.1",
