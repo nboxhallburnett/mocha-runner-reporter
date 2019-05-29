@@ -34,10 +34,8 @@ const runner = new Runner(test-files, ignored-files, params);
 
 runner.run()
     .then(results => {
-        // Optional custom reporting using the raw data for a full report
-        const report = runner.generateReport(params.title, results);
-        // Option custom reporting using the raw data for a minimal report (only shows slows and failures)
-        const report = runner.generateMinimalReport(params.title, results);
+		// Optional custom reporting using the raw data for a full report. or a minimal report if a truthy value is passed
+        const report = runner.generateReport(params.title, results, minimal);
 
         // Optional reporting using the generated report
         const reporter = new Reporter(reportData.provider, reportData.email, reportData.password, reportData.alias);
