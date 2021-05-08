@@ -8,22 +8,22 @@
   },
   "author": {
     "name": "Nathan Boxhall-Burnett",
-    "email": "nboxhallburnett@appcelerator.com"
+    "email": "nboxhallburnett@gmail.com"
   },
   "dependencies": {
-    "colors": "^1.1.2",
-    "minimist": "^1.2.0",
-    "mocha": "^4.0.1",
-    "nodemailer": "^4.4.1",
-    "nodemailer-smtp-transport": "^2.7.4",
-    "pad-left": "^2.1.0",
-    "strip-ansi": "^4.0.0",
-    "word-wrap": "^1.2.3"
+    "colors": "1.4.0",
+    "minimist": "1.2.5",
+    "mocha": "8.4.0",
+    "nodemailer": "4.4.1",
+    "nodemailer-smtp-transport": "2.7.4",
+    "pad-left": "2.1.0",
+    "strip-ansi": "6.0.0",
+    "word-wrap": "1.2.3"
   },
   "devDependencies": {
-    "eslint": "^4.13.1",
-    "eslint-config-axway": "^2.0.7",
-    "eslint-plugin-mocha": "^6.2.2"
+    "eslint": "7.26.0",
+    "eslint-config-axway": "6.0.1",
+    "eslint-plugin-mocha": "8.1.0"
   },
   "license": "MIT",
   "repository": {
@@ -38,6 +38,6 @@
     "report"
   ],
   "engines": {
-    "node": ">= 4.0.0"
+    "node": "^12.0.0"
   }
 }
