@@ -1,10 +1,11 @@
 mocha-runner-reporter
 ===========
+
 - [Description](#description)
 - [Usage](#usage)
 - [Structure](#structure)
-  + [Constructor parameters](#constructor-parameters)
-  + [Email Reporter data](#email-reporter-data)
+  - [Constructor parameters](#constructor-parameters)
+  - [Email Reporter data](#email-reporter-data)
 - [Report Generation](#report-generation)
 
 ### Description ###
@@ -19,7 +20,7 @@ Also included is a Promise-based wrapper around [nodemailer](https://www.npmjs.c
 
 ### Usage ###
 
-```
+```bash
 > node run.js --your arguments --go --here
 ```
 
@@ -34,7 +35,7 @@ const runner = new Runner(test-files, ignored-files, params);
 
 runner.run()
     .then(results => {
-		// Optional custom reporting using the raw data for a full report. or a minimal report if a truthy value is passed
+        // Optional custom reporting using the raw data for a full report. or a minimal report if a truthy value is passed
         const report = runner.generateReport(params.title, results, minimal);
 
         // Optional reporting using the generated report
@@ -43,7 +44,6 @@ runner.run()
     })
     ...
 ```
-
 
 ### Structure ###
 
@@ -81,7 +81,9 @@ const params = {
     afterArgs: () => {}                 // [Optional] Function to perform after processing arguments
 };
 ```
+
 For example:
+
 ```javascript
 const params = {
     title: 'Test Runner Tester',
@@ -132,12 +134,13 @@ const params = {
         if (!config.option && config.somethingFromAnArg !== 'something') {
             // More Validation
         }
-	}
+ }
 };
 ```
+
 Which generates a helper output for the test suite
 
-```
+```bash
 > node run.js -h
 
 ┌────────────────────┐
@@ -174,6 +177,7 @@ Notes:
    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
 ```
+
 #### Email Reporter data
 
 The test runner also includes an optional promise based wrapper around nodemailer, which also simplifies the setup and sending of emails.
@@ -201,7 +205,7 @@ runner.run().then(results => {
 });
 ```
 
-```
+```text
 /********************\
 
   Test Runner Tester

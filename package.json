@@ -13,11 +13,11 @@
   "dependencies": {
     "colors": "1.4.0",
     "minimist": "1.2.5",
-    "mocha": "4.0.1",
+    "mocha": "8.4.0",
     "nodemailer": "4.4.1",
     "nodemailer-smtp-transport": "2.7.4",
     "pad-left": "2.1.0",
-    "strip-ansi": "4.0.0",
+    "strip-ansi": "6.0.0",
     "word-wrap": "1.2.3"
   },
   "devDependencies": {
